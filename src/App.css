@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-card {
+  background-size: cover;
+  background-position: center;
+}
+

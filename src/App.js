@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./App.css";
+import Banner from "./Components/Banner";
+import Navbar from "./Components/Navbar";
+import Options from "./Components/Options";
+import Recommende from "./Components/Recommende";
 
 function App() {
+  const [data, setData] = useState([]);
+
+  const getdata = () => {
+    axios
+      .get(
+        "https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&type=reco"
+      )
+      .then((res) => {
+        setData(res.data.events);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getdata();
+  }, [data]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <Options />
+      <Banner data={data} />
+    </>
   );
 }
 
