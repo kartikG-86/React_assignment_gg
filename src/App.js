@@ -15,7 +15,7 @@ function App() {
       )
       .then((res) => {
         let fetchData = res.data.events;
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i <= 5; i++) {
           fetchData = [...fetchData, ...fetchData];
         }
         console.log(fetchData.length);
