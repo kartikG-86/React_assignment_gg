@@ -161,9 +161,15 @@ const Banner = ({ data }) => {
                 </div>
               } // Loader component to show while fetching data
               endMessage={
-                <p className="text-center fs-5 my-5">
-                  Ohh! No more events to load
-                </p>
+                events.length > 0 ? (
+                  <p className="text-center fs-5 my-5">
+                    Ohh! No more events to load
+                  </p>
+                ) : (
+                  <p className="text-center fs-5 my-5">
+                    Wait, we are fetching data
+                  </p>
+                )
               } // Message to show when all events have been loaded
             >
               <div className="row mx-5">
