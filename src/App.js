@@ -27,9 +27,11 @@ function App() {
   }, [data]);
   return (
     <>
-      <Navbar />
-      <Options />
-      <Banner data={data} />
+      <div class="overflow-x-hidden">
+        <Navbar />
+        <Options />
+        <Banner data={data} />
+      </div>
     </>
   );
 }

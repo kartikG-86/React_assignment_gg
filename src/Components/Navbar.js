@@ -7,7 +7,7 @@ const Navbar = () => {
         <div class="container">
           <a
             class="navbar-brand me-auto col-2"
-            href="#"
+            href="/"
             style={{ color: "#CF2D2D", fontWeight: "bold" }}
           >
             BookUsNow
@@ -27,7 +27,7 @@ const Navbar = () => {
                   <span>Categories</span>
                 </div>
               </button>
-              <div class="d-none d-sm-block" style={{ width: "35rem" }}>
+              <div class="d-none d-md-block" style={{ width: "35rem" }}>
                 <div class="d-flex">
                   <input
                     class="form-control me-2  d-none d-sm-block"
@@ -49,7 +49,7 @@ const Navbar = () => {
             <button class="btn d-block d-md-none" type="button">
               <i class="bi bi-search"></i>
             </button>
-            <button class="btn me-2 d-none d-sm-block d-md-flex" type="button">
+            <button class="btn me-2 d-none d-md-block d-md-flex" type="button">
               <i class="bi bi-person mx-2"></i>
               <span class="">Favourite</span>
             </button>
@@ -57,7 +57,7 @@ const Navbar = () => {
               <i class="bi bi-heart"></i>
             </button>
             <button
-              class="btn btn-outline-secondary d-none d-sm-block"
+              class="btn btn-outline-secondary d-none d-md-block"
               type="button"
             >
               <span>SignIn</span>

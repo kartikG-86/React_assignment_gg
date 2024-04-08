@@ -24,16 +24,20 @@ const Banner = ({ data }) => {
     fetchRecommendData();
   }, [recommend]);
 
-  const fetchData = async () => {
+  const fetchData = () => {
     try {
       // Simulate a loading delay with a timeout
-      setTimeout(async () => {
-        const response = await axios.get(
-          `https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&page=${pageNumber}&type=upcoming`
-        );
-        const { data } = response;
-        setEvents((prevEvents) => [...prevEvents, ...data.events]);
-        setTotalPages(data.totalPages);
+      setTimeout(() => {
+        axios
+          .get(
+            `https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&page=${pageNumber}&type=upcoming`
+          )
+          .then((response) => {
+            const resData = response.data;
+            console.log(resData);
+            setEvents((prevEvents) => [...prevEvents, ...resData.events]);
+            setTotalPages(resData.totalPages);
+          });
       }, 1500); // Simulated loading time: 1.5 seconds
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -181,7 +185,7 @@ const Banner = ({ data }) => {
             >
               <div class="row mx-5">
                 {events.map((item, index) => (
-                  <div class="col-xl-4 col-lg-4 col-12 my-3">
+                  <div class="col-xl-4 col-lg-4 col-md-6 col-12 my-3">
                     <div
                       class="card"
                       style={{ width: "22rem", height: "22rem" }}
@@ -213,10 +217,10 @@ const Banner = ({ data }) => {
                       >
                         <span>{formatDate(item.date)}</span>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body mb-2">
                         <h5 class="card-title">{item.eventName}</h5>
                         <div
-                          class="row"
+                          class="row "
                           style={{ fontSize: "0.9rem", color: "grey" }}
                         >
                           <span class=" col-6">
