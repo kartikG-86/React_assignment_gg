@@ -14,33 +14,27 @@ const Banner = ({ data }) => {
     return dateObject.toLocaleDateString("en-US", options);
   }
 
-  const [recommend, setRecommend] = useState(data);
   const [events, setEvents] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    fetchRecommendData();
-  }, [recommend]);
-
-  const fetchData = () => {
+  const fetchData = async () => {
+    setIsLoading(true); // Set loading state to true while fetching data
     try {
       // Simulate a loading delay with a timeout
-      setTimeout(() => {
-        axios
-          .get(
-            `https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&page=${pageNumber}&type=upcoming`
-          )
-          .then((response) => {
-            const resData = response.data;
-            console.log(resData);
-            setEvents((prevEvents) => [...prevEvents, ...resData.events]);
-            setTotalPages(resData.totalPages);
-          });
-      }, 1500); // Simulated loading time: 1.5 seconds
+
+      const response = await axios.get(
+        `https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&page=${pageNumber}&type=upcoming`
+      );
+      console.log(response);
+      const { data } = response;
+      setEvents((prevEvents) => [...prevEvents, ...data.events]);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false); // Set loading state to false after data is fetched (whether successful or not)
     }
   };
 
@@ -51,16 +45,11 @@ const Banner = ({ data }) => {
     }
   };
 
-  const fetchRecommendData = () => {
-    setRecommend((prev) => [...prev, ...data]);
-    console.log("recommend", recommend);
-  };
-
   return (
     <>
-      <div class="position-relative">
+      <div className="position-relative">
         <div
-          class="container-fluid p-5"
+          className="container-fluid p-5"
           style={{
             backgroundImage: 'url("/Banner.jpg")',
             backgroundPosition: "center",
@@ -70,13 +59,13 @@ const Banner = ({ data }) => {
             color: "white",
           }}
         >
-          <h1 class="fs-1 text-center my-4">
+          <h1 className="fs-1 text-center my-4">
             Discover Exciting Events Happening
           </h1>
-          <h1 class="fs-1 text-center my-4">
+          <h1 className="fs-1 text-center my-4">
             Near You - Stay Tuned for Updates
           </h1>
-          <p class="text-center px-5 mx-5">
+          <p className="text-center px-5 mx-5">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
             mollitia, molestiae quas vel sint commodi repudiandae consequuntur
             voluptatum laborum numquam blanditiis harum quisquam eius sed odit
@@ -86,27 +75,27 @@ const Banner = ({ data }) => {
         </div>
 
         <div
-          class="position-absolute"
+          className="position-absolute"
           style={{ color: "white", left: "1rem", top: "30rem" }}
         >
-          <div class="mx-5" style={{ width: "82vw" }}>
-            <h4 class="my-4">
+          <div className="mx-5" style={{ width: "82vw" }}>
+            <h4 className="my-4">
               Recommended shows
               <span>
-                <i class="bi bi-arrow-right"></i>
+                <i className="bi bi-arrow-right"></i>
               </span>
             </h4>
 
             <div
-              class=" d-flex mb-4"
-              onScroll={fetchRecommendData}
+              className=" d-flex mb-4"
               style={{
-                overflowX: "auto",
+                overflowX: "scroll",
               }}
             >
-              {recommend.map((item) => (
+              {data.map((item, index) => (
                 <div
-                  class="card custom-card mx-3"
+                  key={index}
+                  className="card custom-card mx-3"
                   style={{
                     backgroundImage: `url(https://drive.google.com/thumbnail?sz=w1000&id=${
                       item.imgUrl.split("/")[item.imgUrl.split("/").length - 2]
@@ -120,29 +109,29 @@ const Banner = ({ data }) => {
                   }}
                 >
                   <div
-                    class="container-fluid position-absolute px-4"
+                    className="container-fluid position-absolute px-4"
                     style={{ color: "white", top: "17rem" }}
                   >
-                    <div class="row">
-                      <div class="col-6 text-start fw-bold">
+                    <div className="row">
+                      <div className="col-6 text-start fw-bold">
                         {item.eventName}
                       </div>
-                      <div class="col-6" style={{ fontSize: "0.9rem" }}>
+                      <div className="col-6" style={{ fontSize: "0.9rem" }}>
                         {formatDate(item.date)}
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-6">
+                    <div className="row">
+                      <div className="col-6">
                         {" "}
-                        <span class="mx-1">
+                        <span className="mx-1">
                           <i
-                            class="bi bi-geo-alt"
+                            className="bi bi-geo-alt"
                             style={{ color: "grey" }}
                           ></i>
                         </span>
                         {item.cityName}
                       </div>
-                      <div class="col-6">{item.weather}</div>
+                      <div className="col-6">{item.weather}</div>
                     </div>
                   </div>
                 </div>
@@ -150,12 +139,12 @@ const Banner = ({ data }) => {
             </div>
           </div>
 
-          <div class="container-fluid" style={{ color: "black" }}>
-            <div class="my-5 mx-5">
-              <h4 class="fw-bold my-4">
+          <div className="container-fluid" style={{ color: "black" }}>
+            <div className="my-5 mx-5">
+              <h4 className="fw-bold my-4">
                 Upcoming Events
                 <span>
-                  <i class="bi bi-arrow-right"></i>
+                  <i className="bi bi-arrow-right"></i>
                 </span>
               </h4>
               <hr />
@@ -165,29 +154,26 @@ const Banner = ({ data }) => {
               next={fetchMoreData} // Function to call when reaching the end of the page
               hasMore={pageNumber <= totalPages} // Check if there are more pages to fetch
               loader={
-                <div class="d-flex py-3 justify-content-center">
-                  <div class="spinner-grow" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="d-flex py-3 justify-content-center">
+                  <div className="spinner-grow" role="status">
+                    <span className="visually-hidden">Loading...</span>
                   </div>
                 </div>
               } // Loader component to show while fetching data
               endMessage={
-                events.length > 0 ? (
-                  <p class="text-center fs-5 my-5">
-                    Ohh! No more events to load
-                  </p>
-                ) : (
-                  <p class="text-center fs-5 my-5">
-                    Wait, We are fetching Data
-                  </p>
-                )
+                <p className="text-center fs-5 my-5">
+                  Ohh! No more events to load
+                </p>
               } // Message to show when all events have been loaded
             >
-              <div class="row mx-5">
+              <div className="row mx-5">
                 {events.map((item, index) => (
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-12 my-3">
+                  <div
+                    className="col-xl-4 col-lg-4 col-md-6 col-12 my-3"
+                    key={index}
+                  >
                     <div
-                      class="card"
+                      className="card"
                       style={{ width: "22rem", height: "22rem" }}
                     >
                       <img
@@ -196,11 +182,11 @@ const Banner = ({ data }) => {
                             item.imgUrl.split("/").length - 2
                           ]
                         }`}
-                        class="card-img-top"
+                        className="card-img-top"
                         alt="..."
                       />
                       <div
-                        class="position-absolute"
+                        className="position-absolute"
                         style={{
                           top: "13.4rem",
                           left: "1rem",
@@ -217,21 +203,21 @@ const Banner = ({ data }) => {
                       >
                         <span>{formatDate(item.date)}</span>
                       </div>
-                      <div class="card-body mb-2">
-                        <h5 class="card-title">{item.eventName}</h5>
+                      <div className="card-body mb-2">
+                        <h5 className="card-title">{item.eventName}</h5>
                         <div
-                          class="row "
+                          className="row "
                           style={{ fontSize: "0.9rem", color: "grey" }}
                         >
-                          <span class=" col-6">
+                          <span className=" col-6">
                             {" "}
                             <i
-                              class="bi bi-geo-alt mx-1"
+                              className="bi bi-geo-alt mx-1"
                               style={{ color: "grey" }}
                             ></i>
                             {item.cityName}
                           </span>
-                          <span class="col-6">
+                          <span className="col-6">
                             {item.weather} | {Math.floor(item.distanceKm / 100)}
                             Km
                           </span>

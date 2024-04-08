@@ -4,7 +4,6 @@ import "./App.css";
 import Banner from "./Components/Banner";
 import Navbar from "./Components/Navbar";
 import Options from "./Components/Options";
-import Recommende from "./Components/Recommende";
 
 function App() {
   const [data, setData] = useState([]);
@@ -15,7 +14,12 @@ function App() {
         "https://gg-backend-assignment.azurewebsites.net/api/Events?code=FOX643kbHEAkyPbdd8nwNLkekHcL4z0hzWBGCd64Ur7mAzFuRCHeyQ==&type=reco"
       )
       .then((res) => {
-        setData(res.data.events);
+        let fetchData = res.data.events;
+        for (let i = 0; i < 3; i++) {
+          fetchData = [...fetchData, ...fetchData];
+        }
+        console.log(fetchData.length);
+        setData(fetchData);
       })
       .catch((err) => {
         console.log(err);
@@ -24,10 +28,11 @@ function App() {
 
   useEffect(() => {
     getdata();
-  }, [data]);
+  }, []);
+
   return (
     <>
-      <div class="overflow-x-hidden">
+      <div className="overflow-x-hidden">
         <Navbar />
         <Options />
         <Banner data={data} />
